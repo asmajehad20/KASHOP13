@@ -1,0 +1,14 @@
+C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\bin\Debug\net10.0\KASHOP13.DAL.deps.json
+C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\bin\Debug\net10.0\KASHOP13.DAL.runtimeconfig.json
+C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\bin\Debug\net10.0\KASHOP13.DAL.dll
+C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\bin\Debug\net10.0\KASHOP13.DAL.pdb
+C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\obj\Debug\net10.0\KASHOP13.DAL.csproj.AssemblyReference.cache
+C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\obj\Debug\net10.0\KASHOP13.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\obj\Debug\net10.0\KASHOP13.DAL.AssemblyInfoInputs.cache
+C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\obj\Debug\net10.0\KASHOP13.DAL.AssemblyInfo.cs
+C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\obj\Debug\net10.0\KASHOP13.DAL.csproj.CoreCompileInputs.cache
+C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\obj\Debug\net10.0\KASHOP13.DAL.dll
+C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\obj\Debug\net10.0\refint\KASHOP13.DAL.dll
+C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\obj\Debug\net10.0\KASHOP13.DAL.pdb
+C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\obj\Debug\net10.0\KASHOP13.DAL.genruntimeconfig.cache
+C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\obj\Debug\net10.0\ref\KASHOP13.DAL.dll
