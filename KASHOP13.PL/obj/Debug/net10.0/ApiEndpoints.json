@@ -53,6 +53,38 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "KASHOP13.PL.Controllers.AccountController",
+    "Method": "ResetPasswordRequest",
+    "RelativePath": "api/Account/ResetPassword",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "KASHOP13.DAL.DTO.Request.ResetPasswordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "KASHOP13.PL.Controllers.AccountController",
+    "Method": "RequestPasswordReset",
+    "RelativePath": "api/Account/SendCode",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "KASHOP13.DAL.DTO.Request.ForgetPasswordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "KASHOP13.PL.Controllers.CategoriesController",
     "Method": "Create",
     "RelativePath": "api/Categories",

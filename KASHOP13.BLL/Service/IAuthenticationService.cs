@@ -11,5 +11,7 @@ namespace KASHOP13.BLL.Service
         Task<RegisterResponse> RegisterAsync(RegisterRequest request);
         Task<LoginResponse> LoginAsync(LoginRequest request);
         Task<bool> ConfirmEmailAsync(string token, string userId);
+        Task<ForgetPasswordResponse> RequestPasswordResetAsync(ForgetPasswordRequest request);
+        Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest request);
     }
 }

@@ -12,3 +12,4 @@ C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\obj\Debug\net10.0\refint\KASHO
 C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\obj\Debug\net10.0\KASHOP13.DAL.pdb
 C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\obj\Debug\net10.0\KASHOP13.DAL.genruntimeconfig.cache
 C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\obj\Debug\net10.0\ref\KASHOP13.DAL.dll
+C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.DAL\obj\Debug\net10.0\KASHOP13.DAL.sourcelink.json

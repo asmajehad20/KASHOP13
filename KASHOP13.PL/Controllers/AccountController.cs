@@ -38,5 +38,21 @@ namespace KASHOP13.PL.Controllers
             if(isConfimed) return Ok(new { message = "Success" });
             return BadRequest();
         }
+
+        [HttpPost("SendCode")]
+        public async Task<IActionResult> RequestPasswordReset(ForgetPasswordRequest request)
+        {
+            var result = await _authenticationService.RequestPasswordResetAsync(request);
+            if(!result.Success) return BadRequest(result);
+            return Ok(result);
+        }
+
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPasswordRequest(ResetPasswordRequest request)
+        {
+            var result = await _authenticationService.ResetPasswordAsync(request);
+            if (!result.Success) return BadRequest(result);
+            return Ok(result);
+        }
     }
 }
