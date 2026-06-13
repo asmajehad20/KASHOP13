@@ -63,6 +63,10 @@
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[9.0.9, )"
+            },
+            "Stripe.net": {
+              "target": "Package",
+              "version": "[52.0.0, )"
             }
           },
           "imports": [

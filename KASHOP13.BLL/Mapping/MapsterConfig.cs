@@ -40,6 +40,13 @@ namespace KASHOP13.BLL.Mapping
                     t => t.Language == CultureInfo.CurrentCulture.Name).Select(t => t.Name).FirstOrDefault()
                 )
                 .Map(dest => dest.Logo, source => $"{HttpContextHelper.Accessor.HttpContext.Request.Scheme}://{HttpContextHelper.Accessor.HttpContext.Request.Host}/images/{source.Logo}");
+
+            TypeAdapterConfig<Cart, CartResponse>.NewConfig()
+                .Map(dest => dest.ProductName, source => source.Product.Translations.Where(
+                    t => t.Language == CultureInfo.CurrentCulture.Name).Select(t => t.Name).FirstOrDefault()
+                )
+                .Map(dest => dest.Price, source => source.Product.Price)
+                .Map(dest => dest.ProductImage, source => $"{HttpContextHelper.Accessor.HttpContext.Request.Scheme}://{HttpContextHelper.Accessor.HttpContext.Request.Host}/images/{source.Product.MainImage}"); 
         }
     }
 }

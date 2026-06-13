@@ -16,6 +16,10 @@ namespace KASHOP13.PL.Extentions
 
             Services.AddScoped<IProductRepository, ProductRepository>();
             Services.AddScoped<IProductService, ProductService>();
+
+            Services.AddScoped<ICartRepository, CartRepository>();
+            Services.AddScoped<ICartService, CartService>();
+
             Services.AddScoped<IFileService, FileService>();
             Services.AddScoped<IAuthenticationService, AuthenticationService>();
             Services.AddScoped<ISeedData, RoleSeedData>();
