@@ -61,5 +61,23 @@ namespace KASHOP13.PL.Controllers
             if (!deleted) return BadRequest();
             return Ok();
         }
+
+        [HttpPatch("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Update(int id, [FromForm] ProductUpdateRequest request)
+        {
+            var updated = await _productService.UpdateProduct(id, request);
+            if(!updated) return BadRequest();
+            return Ok();
+        }
+
+        [HttpPatch("{id}/status")]
+        [Authorize]
+        public async Task<IActionResult> ChangeStatus(int id)
+        {
+            var updated = await _productService.ToggleStatus(id);
+            if (!updated) return BadRequest();
+            return Ok();
+        }
     }
 }

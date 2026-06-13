@@ -491,6 +491,119 @@
             "description": "OK"
           }
         }
+      },
+      "patch": {
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": [
+                "integer",
+                "string"
+              ],
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Price": {
+                    "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
+                    "type": [
+                      "number",
+                      "string"
+                    ],
+                    "format": "double"
+                  },
+                  "Discount": {
+                    "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
+                    "type": [
+                      "number",
+                      "string"
+                    ],
+                    "format": "double"
+                  },
+                  "MainImage": {
+                    "$ref": "#/components/schemas/IFormFile"
+                  },
+                  "Quantity": {
+                    "pattern": "^-?(?:0|[1-9]\\d*)$",
+                    "type": [
+                      "integer",
+                      "string"
+                    ],
+                    "format": "int32"
+                  },
+                  "Translations": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ProductTranslationRequest"
+                    }
+                  },
+                  "CategoryId": {
+                    "pattern": "^-?(?:0|[1-9]\\d*)$",
+                    "type": [
+                      "integer",
+                      "string"
+                    ],
+                    "format": "int32"
+                  },
+                  "BrandId": {
+                    "pattern": "^-?(?:0|[1-9]\\d*)$",
+                    "type": [
+                      "integer",
+                      "string"
+                    ],
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Products/{id}/status": {
+      "patch": {
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": [
+                "integer",
+                "string"
+              ],
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
     },
     "/WeatherForecast": {

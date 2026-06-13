@@ -1,114 +1,19 @@
 using KASHOP13.BLL.Mapping;
-using KASHOP13.BLL.Service;
-using KASHOP13.DAL.Data;
-using KASHOP13.DAL.Models;
-using KASHOP13.DAL.Repository;
 using KASHOP13.DAL.Utility;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.EntityFrameworkCore;
+using KASHOP13.PL.Extentions;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System.Globalization;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-        policy =>
-        {
-            policy.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-        });
-});
+builder.Services.AddCoresPolicyServices();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
-
-builder.Services.AddLocalization(options => options.ResourcesPath = "");
-const string defaultCulture = "en";
-var supportedCultures = new[]
-{
-    new CultureInfo(defaultCulture),
-    new CultureInfo("ar"),
-    //new CultureInfo("fr")
-};
-builder.Services.Configure<RequestLocalizationOptions>(options => {
-    options.DefaultRequestCulture = new RequestCulture(defaultCulture);
-    options.SupportedCultures = supportedCultures;
-    options.SupportedUICultures = supportedCultures;
-    options.RequestCultureProviders.Clear();
-    //options.RequestCultureProviders.Add(new QueryStringRequestCultureProvider
-    //{
-    //    QueryStringKey = "lang"
-    //});
-    options.RequestCultureProviders.Add(new AcceptLanguageHeaderRequestCultureProvider());
-});
-
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-
-builder.Services.AddScoped<IBrandRepository, BrandRepository>();
-builder.Services.AddScoped<IBrandService, BrandService>();
-
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IFileService, FileService>();
-builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-builder.Services.AddScoped<ISeedData, RoleSeedData>();
-builder.Services.AddTransient<IEmailSender, EmailSender>();
-
-
-
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-{
-    options.User.RequireUniqueEmail = true;
-
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireNonAlphanumeric = true;
-
-    options.Lockout.MaxFailedAccessAttempts = 5;
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-})
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
-
-
-//jwttoken
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-
-        .AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                ValidAudience = builder.Configuration["Jwt:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]))
-            };
-        });
+builder.Services.AddDatabaseServices(builder.Configuration);
+builder.Services.AddLocalizationServices();
+builder.Services.AddIdentityServices();
+builder.Services.AddAuthenticationServices(builder.Configuration);
+builder.Services.AddApplicationServices();
 
 MapsterConfig.MapsterConfigRegister();
 builder.Services.AddHttpContextAccessor();
@@ -124,7 +29,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-app.UseCors(MyAllowSpecificOrigins);
+app.UseCors(AddCoresPolicyExtentions.PolicyName);
 
 app.UseHttpsRedirection();
 

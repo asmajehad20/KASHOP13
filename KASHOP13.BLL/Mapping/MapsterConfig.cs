@@ -1,4 +1,5 @@
-﻿using KASHOP13.DAL.DTO.Response;
+﻿using KASHOP13.DAL.DTO.Request;
+using KASHOP13.DAL.DTO.Response;
 using KASHOP13.DAL.Models;
 using Mapster;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,11 @@ namespace KASHOP13.BLL.Mapping
                 .Map(dest => dest.Name, source => source.Translations.Where(
                     t => t.Language == CultureInfo.CurrentCulture.Name).Select(t => t.Name).FirstOrDefault()
                 )
-                .Map(dest => dest.MainImage, source => $"{HttpContextHelper.Accessor.HttpContext.Request.Scheme}://{HttpContextHelper.Accessor.HttpContext.Request.Host}/images/{source.MainImage}");
+                .Map(dest => dest.MainImage, source => $"{HttpContextHelper.Accessor.HttpContext.Request.Scheme}://{HttpContextHelper.Accessor.HttpContext.Request.Host}/images/{source.MainImage}")
+                ;
+
+            TypeAdapterConfig<ProductUpdateRequest, Product>.NewConfig()
+                .IgnoreNullValues(true);
 
             TypeAdapterConfig<Brand, BrandResponse>.NewConfig()
                 .Map(dest => dest.BrandId, source => source.Id)
