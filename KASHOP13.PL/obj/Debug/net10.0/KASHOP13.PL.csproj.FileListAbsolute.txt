@@ -167,3 +167,4 @@ C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.PL\bin\Debug\net10.0\Mapster.Core.
 C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.PL\bin\Debug\net10.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.PL\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.PL\obj\Debug\net10.0\KASHOP13.PL.sourcelink.json
+C:\Users\asmaj\source\repos\KASHOP13\KASHOP13.PL\bin\Debug\net10.0\KASHOP13.PL.staticwebassets.runtime.json

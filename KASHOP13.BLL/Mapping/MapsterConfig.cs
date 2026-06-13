@@ -1,0 +1,40 @@
+﻿using KASHOP13.DAL.DTO.Response;
+using KASHOP13.DAL.Models;
+using Mapster;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Text;
+
+namespace KASHOP13.BLL.Mapping
+{
+    public static class MapsterConfig
+    {
+        
+        public static void MapsterConfigRegister()
+        {
+            TypeAdapterConfig<Category, CategoryResponse>.NewConfig()
+                .Map(dest => dest.Category_Id, source => source.Id)
+                .Map(dest => dest.User, source => source.CreatedBy.UserName)
+                .Map(dest => dest.Name, source => source.Translations.Where(
+                    t => t.Language == CultureInfo.CurrentCulture.Name).Select(t => t.Name).FirstOrDefault()
+                );
+
+            TypeAdapterConfig<Product, ProductResponse>.NewConfig()
+                .Map(dest => dest.UserCreated, source => source.CreatedBy.UserName)
+                .Map(dest => dest.Name, source => source.Translations.Where(
+                    t => t.Language == CultureInfo.CurrentCulture.Name).Select(t => t.Name).FirstOrDefault()
+                )
+                .Map(dest => dest.MainImage, source => $"{HttpContextHelper.Accessor.HttpContext.Request.Scheme}://{HttpContextHelper.Accessor.HttpContext.Request.Host}/images/{source.MainImage}");
+
+            TypeAdapterConfig<Brand, BrandResponse>.NewConfig()
+                .Map(dest => dest.BrandId, source => source.Id)
+                .Map(dest => dest.User, source => source.CreatedBy.UserName)
+                .Map(dest => dest.Name, source => source.Translations.Where(
+                    t => t.Language == CultureInfo.CurrentCulture.Name).Select(t => t.Name).FirstOrDefault()
+                )
+                .Map(dest => dest.Logo, source => $"{HttpContextHelper.Accessor.HttpContext.Request.Scheme}://{HttpContextHelper.Accessor.HttpContext.Request.Host}/images/{source.Logo}");
+        }
+    }
+}

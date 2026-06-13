@@ -1,3 +1,4 @@
+using KASHOP13.BLL.Mapping;
 using KASHOP13.BLL.Service;
 using KASHOP13.DAL.Data;
 using KASHOP13.DAL.Models;
@@ -59,9 +60,18 @@ builder.Services.Configure<RequestLocalizationOptions>(options => {
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+builder.Services.AddScoped<IBrandService, BrandService>();
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ISeedData, RoleSeedData>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
@@ -100,8 +110,13 @@ builder.Services.AddAuthentication(options =>
             };
         });
 
+MapsterConfig.MapsterConfigRegister();
+builder.Services.AddHttpContextAccessor();
+
 var app = builder.Build();
 
+HttpContextHelper.Accessor =
+    app.Services.GetRequiredService<IHttpContextAccessor>();
 app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
 // Configure the HTTP request pipeline.
@@ -116,6 +131,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseStaticFiles();
 app.MapControllers();
 
 using(var scope = app.Services.CreateScope())
