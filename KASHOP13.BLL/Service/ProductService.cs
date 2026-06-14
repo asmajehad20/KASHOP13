@@ -37,6 +37,21 @@ namespace KASHOP13.BLL.Service
                 var imagePath = await _fileService.UploadAsync(request.MainImage);
                 product.MainImage = imagePath;
             }
+
+            if(request.SubImages != null)
+            {
+                foreach(var image in request.SubImages)
+                {
+                    var imagePath = await _fileService.UploadAsync(image);
+                    
+                    product.Images.Add(new ProductImage
+                    {
+
+                        ImagePath = imagePath
+                    });
+                }
+            }
+
             await _productRepository.CreateAsync(product);
         }
 
@@ -48,7 +63,8 @@ namespace KASHOP13.BLL.Service
                 new string[]
                 {
                     nameof(Product.Translations),
-                    nameof(Product.CreatedBy)
+                    nameof(Product.CreatedBy),
+                    nameof(Product.Images)
                 });
 
             return products.Adapt<List<ProductResponse>>();
@@ -59,7 +75,8 @@ namespace KASHOP13.BLL.Service
             var product = await _productRepository.GetOne(filter, new string[]
             {
                 nameof(Product.Translations),
-                nameof(Product.CreatedBy)
+                nameof(Product.CreatedBy),
+                nameof(Product.Images)
             });
 
             if(product == null) return null;
@@ -68,16 +85,32 @@ namespace KASHOP13.BLL.Service
 
         public async Task<bool> DeleteProduct(int id)
         {
-            var product = await _productRepository.GetOne(c => c.Id == id);
+            var product = await _productRepository.GetOne(c => c.Id == id,
+                new string[]
+                {
+                    nameof(Product.Images)
+                });
+
             if(product == null) return false;
 
             _fileService.Delete(product.MainImage);
+
+            foreach(var image in product.Images)
+            {
+                _fileService.Delete(image.ImagePath);
+            }
             return await _productRepository.DeleteAsync(product);
         }
 
         public async Task<bool> UpdateProduct(int id, ProductUpdateRequest request)
         {
-            var product = await _productRepository.GetOne(p => p.Id == id);
+            var product = await _productRepository.GetOne(p => p.Id == id,
+                 new string[]
+                {
+                    nameof(Product.Translations),
+                    nameof(Product.Images)
+                });
+
             var oldImage = product.MainImage;
 
             request.Adapt(product);
@@ -113,6 +146,31 @@ namespace KASHOP13.BLL.Service
             else
             {
                 product.MainImage = oldImage;
+            }
+
+            if (request.SubImages != null)
+            {
+                foreach(var image in product.Images)
+                {
+                    _fileService.Delete(image.ImagePath);
+                }
+                product.Images.Clear();
+
+                foreach (var image in request.SubImages)
+                {
+                    var imagePath = await _fileService.UploadAsync(image);
+                    product.Images.Add(new ProductImage { ImagePath = imagePath });
+                }
+
+            }
+
+            if(request.NewImages != null)
+            {
+                foreach (var image in request.NewImages)
+                {
+                    var imagePath = await _fileService.UploadAsync(image);
+                    product.Images.Add(new ProductImage { ImagePath = imagePath });
+                }
             }
 
             return await _productRepository.UpdateAsync(product);

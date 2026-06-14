@@ -73,5 +73,11 @@ namespace KASHOP13.DAL.Repository
             var affected = await _context.SaveChangesAsync();
             return affected > 0;
         }
+
+        public async Task<bool> UpdateRangeAsync(List<T> entities)
+        {
+            _context.UpdateRange(entities);
+            return await _context.SaveChangesAsync() > 0;
+        }
     }
 }

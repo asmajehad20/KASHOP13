@@ -22,6 +22,7 @@ namespace KASHOP13.DAL.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
 
+        public DbSet<ProductImage> ProductImages { get; set; }
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options) 

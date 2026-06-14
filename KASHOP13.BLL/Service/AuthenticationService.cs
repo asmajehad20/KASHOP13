@@ -73,6 +73,10 @@ namespace KASHOP13.BLL.Service
                 };
             }
 
+            var refreshToken = await GenerateRefreshToken(user);
+            SetRefreshTokenCookies(refreshToken);
+
+
             return new LoginResponse()
             {
                 Success = true,
@@ -103,6 +107,25 @@ namespace KASHOP13.BLL.Service
 
             return new JwtSecurityTokenHandler().WriteToken(token);
 
+        }
+        private async Task<string> GenerateRefreshToken(ApplicationUser user)
+        {
+            var refreshToken = Guid.NewGuid().ToString();
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(15);
+            await _userManager.UpdateAsync(user);
+            return refreshToken;
+        }
+
+        private void SetRefreshTokenCookies(string refreshToken)
+        {
+            _httpContextAccessor.HttpContext.Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false,//true for production
+                SameSite = SameSiteMode.None,//Strict for production
+                Expires = DateTime.UtcNow.AddDays(15)
+            });
         }
 
         public async Task<bool> ConfirmEmailAsync(string token, string userId)

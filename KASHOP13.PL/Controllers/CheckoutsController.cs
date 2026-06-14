@@ -35,15 +35,19 @@ namespace KASHOP13.PL.Controllers
         }
 
         [HttpGet("success")]
-        public async Task<IActionResult> Success()
+        [AllowAnonymous]
+        public async Task<IActionResult> Success([FromQuery]string sessionId)
         {
+            var result = await _checkoutService.HandleSuccess(sessionId);
             return Ok(new
             {
-                Message = "Success"
+                Message = "Success",
+                sessionId = sessionId
             });
         }
 
         [HttpGet("cancel")]
+        [AllowAnonymous]
         public async Task<IActionResult> Cancel()
         {
             return Ok(new

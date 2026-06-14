@@ -509,6 +509,15 @@
         "tags": [
           "Checkouts"
         ],
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -567,6 +576,12 @@
                   },
                   "MainImage": {
                     "$ref": "#/components/schemas/IFormFile"
+                  },
+                  "SubImages": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/IFormFile"
+                    }
                   },
                   "Quantity": {
                     "pattern": "^-?(?:0|[1-9]\\d*)$",
@@ -705,6 +720,18 @@
                   },
                   "MainImage": {
                     "$ref": "#/components/schemas/IFormFile"
+                  },
+                  "SubImages": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/IFormFile"
+                    }
+                  },
+                  "NewImages": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/IFormFile"
+                    }
                   },
                   "Quantity": {
                     "pattern": "^-?(?:0|[1-9]\\d*)$",

@@ -28,7 +28,12 @@ namespace KASHOP13.BLL.Mapping
                     t => t.Language == CultureInfo.CurrentCulture.Name).Select(t => t.Name).FirstOrDefault()
                 )
                 .Map(dest => dest.MainImage, source => $"{HttpContextHelper.Accessor.HttpContext.Request.Scheme}://{HttpContextHelper.Accessor.HttpContext.Request.Host}/images/{source.MainImage}")
-                ;
+                .Map(dest => dest.SubImages, source => source.Images.Select(
+                    img => $"{HttpContextHelper.Accessor.HttpContext.Request.Scheme}://{HttpContextHelper.Accessor.HttpContext.Request.Host}/images/{img.ImagePath}"));
+            
+            //TypeAdapterConfig<ProductRequest, Product>.NewConfig()
+            //    .Map(dest => dest.SubImages, source => $"{HttpContextHelper.Accessor.HttpContext.Request.Scheme}://{HttpContextHelper.Accessor.HttpContext.Request.Host}/images/{source.SubImages}");
+
 
             TypeAdapterConfig<ProductUpdateRequest, Product>.NewConfig()
                 .IgnoreNullValues(true);

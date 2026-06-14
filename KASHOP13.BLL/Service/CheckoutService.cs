@@ -3,9 +3,11 @@ using KASHOP13.DAL.DTO.Response;
 using KASHOP13.DAL.Models;
 using KASHOP13.DAL.Repository;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 
 using Stripe.Checkout;
+using System.Security.Cryptography;
 
 namespace KASHOP13.BLL.Service
 {
@@ -15,13 +17,26 @@ namespace KASHOP13.BLL.Service
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IOrderRepository _orderRepository;
+        private readonly ICartService _cartService;
+        private readonly IProductRepository _productRepository;
+        private readonly IEmailSender _emailSender;
 
-        public CheckoutService(ICartRepository cartRepository, UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor, IOrderRepository orderRepository)
+        public CheckoutService(
+            ICartRepository cartRepository, 
+            UserManager<ApplicationUser> userManager, 
+            IHttpContextAccessor httpContextAccessor, 
+            IOrderRepository orderRepository, 
+            ICartService cartService,
+            IProductRepository productRepository,
+            IEmailSender emailSender)
         {
             _cartRepository = cartRepository;
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
             _orderRepository = orderRepository;
+            _cartService = cartService;
+            _productRepository = productRepository;
+            _emailSender = emailSender;
         }
 
         public async Task<CheckoutResponse> ProcessCheckout(string userId, CheckoutRequest request)
@@ -117,8 +132,8 @@ namespace KASHOP13.BLL.Service
                 {
                     PaymentMethodTypes = new List<string> { "card" },
                     Mode = "payment",
-                    SuccessUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/checkouts/success",
-                    CancelUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/checkouts/cancel",
+                    SuccessUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/api/checkouts/success?sessionId={{CHECKOUT_SESSION_ID}}",
+                    CancelUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/api/checkouts/cancel",
 
                     LineItems = new List<SessionLineItemOptions>()
                     {
@@ -147,6 +162,9 @@ namespace KASHOP13.BLL.Service
                 var service = new SessionService();
                 var session = service.Create(options);
 
+                order.StripeSessionId = session.Id;
+                await _orderRepository.UpdateAsync(order);
+
                 return new CheckoutResponse
                 {
                     Success = true,
@@ -160,6 +178,46 @@ namespace KASHOP13.BLL.Service
                 Error = "invalid payment method"
             };
         }
+
+        public async Task<CheckoutResponse> HandleSuccess(string sessionId)
+        {
+            var order = await _orderRepository.GetOne(
+                o => o.StripeSessionId == sessionId,
+                includes: new[]
+                {
+                    nameof(Order.Items),
+                    $"{nameof(Order.Items)}.{nameof(OrderItem.Product)}",
+                    $"{nameof(Order.Items)}.{nameof(OrderItem.Product)}.{nameof(Product.Translations)}"
+                }
+                );
+            order.OrderStatus = OrderStatusEnum.Paid;
+
+            await _orderRepository.UpdateAsync(order);
+
+            await _cartService.ClearCart(order.UserId);
+
+            var user = await _userManager.FindByIdAsync(order.UserId);
+            await _emailSender.SendEmailAsync(user.Email, "order confirm", "<h2>your order has been placed successfully</h2>");
+
+            var lowStockProducts = await _productRepository.DecreaseQuantityAsync(order.Items);
+
+            if(lowStockProducts != null)
+            {
+                foreach(var product in lowStockProducts)
+                {
+                    await _emailSender.SendEmailAsync("asmajehad919@gmail.com", "stock notice", $"<p>stock is low, less tha 5. product ({product.Translations.FirstOrDefault(t => t.Language == "en").Name}) current quantity : {product.Quantity}</p>");
+                }
                 
+            }
+
+            return new CheckoutResponse
+            {
+                Success = true,
+                OrderId = order.Id
+            };
+
+        }
+
+
     }
 }

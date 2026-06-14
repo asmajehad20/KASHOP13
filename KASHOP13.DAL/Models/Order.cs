@@ -11,7 +11,8 @@ namespace KASHOP13.DAL.Models
         Approved = 2,
         Shipped = 3,
         Delivered = 4,
-        Canceled = 5
+        Canceled = 5,
+        Paid = 6
     }
     public class Order
     {
