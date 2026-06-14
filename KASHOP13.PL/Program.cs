@@ -13,7 +13,7 @@ builder.Services.AddDatabaseServices(builder.Configuration);
 builder.Services.AddLocalizationServices();
 builder.Services.AddIdentityServices();
 builder.Services.AddAuthenticationServices(builder.Configuration);
-builder.Services.AddApplicationServices();
+builder.Services.AddApplicationServices(builder.Configuration);
 
 MapsterConfig.MapsterConfigRegister();
 builder.Services.AddHttpContextAccessor();

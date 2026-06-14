@@ -472,6 +472,62 @@
         }
       }
     },
+    "/api/Checkouts": {
+      "post": {
+        "tags": [
+          "Checkouts"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckoutRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckoutRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckoutRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Checkouts/success": {
+      "get": {
+        "tags": [
+          "Checkouts"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Checkouts/cancel": {
+      "get": {
+        "tags": [
+          "Checkouts"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Products": {
       "get": {
         "tags": [
@@ -816,6 +872,32 @@
           }
         }
       },
+      "CheckoutRequest": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "street": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "phoneNumber": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "paymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethodEnum"
+          }
+        }
+      },
       "ForgetPasswordRequest": {
         "type": "object",
         "properties": {
@@ -838,6 +920,12 @@
             "type": "string"
           }
         }
+      },
+      "PaymentMethodEnum": {
+        "enum": [
+          "Cash",
+          "Visa"
+        ]
       },
       "ProductTranslationRequest": {
         "type": "object",
@@ -945,6 +1033,9 @@
     },
     {
       "name": "Categories"
+    },
+    {
+      "name": "Checkouts"
     },
     {
       "name": "Products"

@@ -269,6 +269,42 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "KASHOP13.PL.Controllers.CheckoutsController",
+    "Method": "Payment",
+    "RelativePath": "api/Checkouts",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "KASHOP13.DAL.DTO.Request.CheckoutRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "KASHOP13.PL.Controllers.CheckoutsController",
+    "Method": "Cancel",
+    "RelativePath": "api/Checkouts/cancel",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "KASHOP13.PL.Controllers.CheckoutsController",
+    "Method": "Success",
+    "RelativePath": "api/Checkouts/success",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "KASHOP13.PL.Controllers.ProductsController",
     "Method": "Index",
     "RelativePath": "api/Products",
