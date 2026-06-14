@@ -4,6 +4,7 @@ using KASHOP13.DAL.Models;
 using Mapster;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -126,6 +127,38 @@ namespace KASHOP13.BLL.Service
                 SameSite = SameSiteMode.None,//Strict for production
                 Expires = DateTime.UtcNow.AddDays(15)
             });
+        }
+
+        public async Task<LoginResponse> RefreshTokenAsync()
+        {
+            var refreshToken = _httpContextAccessor.HttpContext.Request.Cookies["refreshToken"];
+            if(refreshToken is null )
+            {
+                return new LoginResponse
+                {
+                    Success = false,
+                    Message = "no refresh token"
+                };
+            }
+            var user = await _userManager.Users.FirstOrDefaultAsync(u=>u.RefreshToken == refreshToken);
+            if(user.RefreshTokenExpiry < DateTime.UtcNow)
+            {
+                return new LoginResponse
+                {
+                    Success = false,
+                    Message = "refresh token expired"
+                };
+            }
+
+            var newRefreshToken = await GenerateRefreshToken(user);
+            SetRefreshTokenCookies(newRefreshToken);
+
+            return new LoginResponse
+            {
+                Success = true,
+                Message = "Success",
+                AccessToken = await GenerateAccessToken(user),
+            };
         }
 
         public async Task<bool> ConfirmEmailAsync(string token, string userId)

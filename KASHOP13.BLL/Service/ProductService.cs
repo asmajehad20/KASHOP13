@@ -1,5 +1,6 @@
 ﻿using Azure;
 using Azure.Core;
+using KASHOP13.BLL.Extentions;
 using KASHOP13.DAL.DTO.Request;
 using KASHOP13.DAL.DTO.Response;
 using KASHOP13.DAL.Migrations;
@@ -55,9 +56,9 @@ namespace KASHOP13.BLL.Service
             await _productRepository.CreateAsync(product);
         }
 
-        public async Task<List<ProductResponse>> GetAllProductsAsync()
+        public async Task<PaginationResponse<ProductResponse>> GetAllProductsAsync(PaginationRequest request)
         {
-            var products = await _productRepository.GetAllAsync(
+            var query = _productRepository.GetQuerable(
                 p => p.Status == EntityStatus.Active
                 , 
                 new string[]
@@ -67,7 +68,16 @@ namespace KASHOP13.BLL.Service
                     nameof(Product.Images)
                 });
 
-            return products.Adapt<List<ProductResponse>>();
+            var paginated = await query.ToPaginationAsync(request.Page , request.Limit );
+
+            return new PaginationResponse<ProductResponse>
+            {
+                TotalCount = paginated.TotalCount,
+                Page = paginated.Page,
+                Limit = paginated.Limit,
+                Data = paginated.Data.Adapt<List<ProductResponse>>(),
+                
+            };
         }
 
         public async Task<ProductResponse?> GetProduct(Expression<Func<Product, bool>> filter)
