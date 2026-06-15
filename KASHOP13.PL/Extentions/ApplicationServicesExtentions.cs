@@ -31,6 +31,8 @@ namespace KASHOP13.PL.Extentions
 
             Services.AddScoped<ICheckoutService, BLL.Service.CheckoutService>();
             Services.AddScoped<IOrderRepository, OrderRepository>();
+            Services.AddScoped<IOrderService, OrderService>();
+            Services.AddScoped<IUserManagementService, UserManagementService>();
 
             return Services;
         }

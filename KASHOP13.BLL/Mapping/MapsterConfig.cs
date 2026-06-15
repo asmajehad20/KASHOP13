@@ -15,6 +15,12 @@ namespace KASHOP13.BLL.Mapping
         
         public static void MapsterConfigRegister()
         {
+            TypeAdapterConfig<ApplicationUser, UserDetailsResponse>.NewConfig()
+                .Map(dest => dest.IsBlocked, source => source.LockoutEnd.HasValue && source.LockoutEnd.Value > DateTimeOffset.UtcNow);
+
+            TypeAdapterConfig<ApplicationUser, UserListResponse>.NewConfig()
+                .Map(dest => dest.IsBlocked, source => source.LockoutEnd.HasValue && source.LockoutEnd.Value > DateTimeOffset.UtcNow);
+
             TypeAdapterConfig<Category, CategoryResponse>.NewConfig()
                 .Map(dest => dest.Category_Id, source => source.Id)
                 .Map(dest => dest.User, source => source.CreatedBy.UserName)
@@ -30,10 +36,13 @@ namespace KASHOP13.BLL.Mapping
                 .Map(dest => dest.MainImage, source => $"{HttpContextHelper.Accessor.HttpContext.Request.Scheme}://{HttpContextHelper.Accessor.HttpContext.Request.Host}/images/{source.MainImage}")
                 .Map(dest => dest.SubImages, source => source.Images.Select(
                     img => $"{HttpContextHelper.Accessor.HttpContext.Request.Scheme}://{HttpContextHelper.Accessor.HttpContext.Request.Host}/images/{img.ImagePath}"));
-            
-            //TypeAdapterConfig<ProductRequest, Product>.NewConfig()
-            //    .Map(dest => dest.SubImages, source => $"{HttpContextHelper.Accessor.HttpContext.Request.Scheme}://{HttpContextHelper.Accessor.HttpContext.Request.Host}/images/{source.SubImages}");
 
+            
+            TypeAdapterConfig<Order, OrderDetailsResponse>.NewConfig()
+                .Map(dest => dest.OrderItems, source => source.Items);
+
+            TypeAdapterConfig<OrderItem, OrderItemResponse>.NewConfig()
+                .Map(dest => dest.ProductName, source => source.Product.Translations.FirstOrDefault().Name);
 
             TypeAdapterConfig<ProductUpdateRequest, Product>.NewConfig()
                 .IgnoreNullValues(true);
