@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KASHOP13.BLL")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1f5c053d5f9dbcb681fb9d6835aefd9c0baa6e2b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ef9d6ecd2b06c11f9c45fa1a4fc546bbf9ac8d0b")]
 [assembly: System.Reflection.AssemblyProductAttribute("KASHOP13.BLL")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KASHOP13.BLL")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
