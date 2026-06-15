@@ -1,6 +1,7 @@
 using KASHOP13.BLL.Mapping;
 using KASHOP13.DAL.Utility;
 using KASHOP13.PL.Extentions;
+using KASHOP13.PL.Middleware;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +39,9 @@ app.UseAuthorization();
 
 app.UseStaticFiles();
 app.MapControllers();
+
+app.UseMiddleware<GlobalExceptionHandling>();
+app.UseCustomeMiddleware();
 
 using(var scope = app.Services.CreateScope())
 {
